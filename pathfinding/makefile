@@ -1,4 +1,4 @@
-.phony: all build
+.phony: all build publish
 
 all: build
 

@@ -1,8 +1,12 @@
 {
   "name": "@imreangelo/pathfinder-wasm",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "",
   "main": "dist/pathfinding.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ImreAngelo/pathfinder.wasm.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "make build",
