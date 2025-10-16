@@ -1,0 +1,2 @@
+overrides:
+  '@imreangelo/pathfinder-wasm': link:../../pathfinding-npm-lib

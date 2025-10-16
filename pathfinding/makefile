@@ -4,4 +4,4 @@ all: build
 
 build: 
 	cargo build --target wasm32-unknown-unknown --release
-	wasm-bindgen target/wasm32-unknown-unknown/release/pathfinding.wasm --out-dir ../pathfinding-npm-lib/pkg --target web
+	wasm-bindgen target/wasm32-unknown-unknown/release/pathfinding.wasm --out-dir ../pathfinding-npm-lib/src --target bundler
