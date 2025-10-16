@@ -1,9 +1,8 @@
 use wasm_bindgen::prelude::*;
-use std::collections::{VecDeque, HashSet};
 
 #[wasm_bindgen]
 pub struct Graph {
-    adj: Vec<Vec<usize>>,
+    pub(crate) adj: Vec<Vec<usize>>,
 }
 
 #[wasm_bindgen]
@@ -40,25 +39,26 @@ impl Graph {
         g
     }
 
-    /// Perform BFS from a starting node
-    pub fn bfs(&self, start: usize) -> Vec<usize> {
-        let mut visited = HashSet::new();
-        let mut queue = VecDeque::new();
-        let mut order = Vec::new();
+    // /// Perform BFS from a starting node
+    // #[wasm_bindgen]
+    // pub fn bfs(&self, start: usize) -> Vec<usize> {
+    //     let mut visited = HashSet::new();
+    //     let mut queue = VecDeque::new();
+    //     let mut order = Vec::new();
 
-        queue.push_back(start);
-        visited.insert(start);
+    //     queue.push_back(start);
+    //     visited.insert(start);
 
-        while let Some(node) = queue.pop_front() {
-            order.push(node);
-            for &neighbor in &self.adj[node] {
-                if visited.insert(neighbor) {
-                    queue.push_back(neighbor);
-                }
-            }
-        }
-        order
-    }
+    //     while let Some(node) = queue.pop_front() {
+    //         order.push(node);
+    //         for &neighbor in &self.adj[node] {
+    //             if visited.insert(neighbor) {
+    //                 queue.push_back(neighbor);
+    //             }
+    //         }
+    //     }
+    //     order
+    // }
 
     /// Get neighbors of a node
     pub fn neighbors(&self, node: usize) -> Vec<usize> {

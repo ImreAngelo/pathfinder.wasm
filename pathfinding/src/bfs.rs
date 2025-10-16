@@ -1,28 +1,39 @@
 use wasm_bindgen::prelude::*;
-use std::collections::{VecDeque, HashSet};
-use serde_wasm_bindgen::{to_value, from_value};
+use std::collections::{VecDeque, HashMap, HashSet};
+use crate::graph::Graph;
 
+
+/// Find the shortest path between `start` and `goal` using BFS
 #[wasm_bindgen]
-pub fn bfs(start: usize, graph: JsValue) -> Result<JsValue, JsValue> {
-    // Deserialize JS array into Vec<Vec<usize>>
-    let graph: Vec<Vec<usize>> = from_value(graph).map_err(|e| e.to_string())?;
-
-    let mut visited = HashSet::new();
+pub fn bfs_shortest_path(graph: &Graph, start: usize, goal: usize) -> Vec<usize> {
     let mut queue = VecDeque::new();
-    let mut order = Vec::new();
+    let mut visited = HashSet::new();
+    let mut parent = HashMap::new();
 
     queue.push_back(start);
     visited.insert(start);
 
     while let Some(node) = queue.pop_front() {
-        order.push(node);
-        for &neighbor in &graph[node] {
+        if node == goal {
+            // reconstruct path
+            let mut path = vec![goal];
+            let mut current = goal;
+            while let Some(&p) = parent.get(&current) {
+                path.push(p);
+                current = p;
+            }
+            path.reverse();
+            return path;
+        }
+
+        for &neighbor in &graph.adj[node] {
             if visited.insert(neighbor) {
+                parent.insert(neighbor, node);
                 queue.push_back(neighbor);
             }
         }
     }
 
-    // Serialize result back to JsValue
-    to_value(&order).map_err(|e| e.to_string().into())
+    // No path found
+    vec![]
 }
