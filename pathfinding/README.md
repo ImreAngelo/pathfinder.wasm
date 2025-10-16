@@ -1,4 +1,8 @@
-# Pathfinder (Web Assembly)
+# Pathfinding in Web Assembly
+A package to perform pathfinding without the performance impact of using javascript. 
+This package is implemented in Rust and compiled to Web Assembly (WASM), thereby achieving native performance in the browser.
+
+Currently supports dijkstra only. Planned support for A* and JPS, as well as maze graph generation.
 
 ## Install
 `pnpm add @imreangelo/pathfinder-wasm`
@@ -22,4 +26,4 @@ export default defineConfig({
 ```
 
 ## Usage
-Check out the [examples](https://github.com/ImreAngelo/pathfinder.wasm/blob/master/examples/react-example/src/App.tsx) folder
+Check out the [examples](https://github.com/ImreAngelo/pathfinder.wasm/blob/master/examples/react-example/src/App.tsx).
