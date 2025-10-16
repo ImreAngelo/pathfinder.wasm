@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { add } from '@imreangelo/pathfinder-wasm';
+import { add, bfs } from '@imreangelo/pathfinder-wasm';
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -8,6 +8,16 @@ function App() {
 	const [count, setCount] = useState(0)
 
 	console.log("2 + 3 =", add(2, 3));
+
+	const graph = [
+		[1, 2],
+		[0, 3],
+		[0, 3],
+		[1, 2]
+	];
+
+	const order = bfs(0, graph);
+	console.log("BFS order:", order);
 
 	return (
 		<>
