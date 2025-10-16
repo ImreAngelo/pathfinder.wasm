@@ -10,11 +10,13 @@ function App() {
 	useEffect(() => {
 		(async () => {
 			const g = Graph.new_grid(4, 4);
-			setGraph(g);
-
+			g.add_weighted_edge(0, 5, 2.0);
+			
 			// const path = Array.from(bfs(g, 0, 15));
 			const path = Array.from(dijkstra(g, 0, 15))
-  			console.log("Shortest path:", path);
+			console.log("Shortest path:", path);
+			
+			setGraph(g);
 			setHighlight(path);
 		})();
 	}, []);
