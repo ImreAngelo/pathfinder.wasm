@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react';
-import { add, bfs_shortest_path, Graph } from '@imreangelo/pathfinder-wasm';
+import { dijkstra, Graph } from '@imreangelo/pathfinder-wasm';
 import GraphCanvas from './components/graph-canvas';
 import './App.css'
 
 function App() {
-	// Simple test that WASM build is working
-	console.log("2 + 3 =", add(2, 3));
-
 	const [graph, setGraph] = useState<any>(null);
 	const [highlight, setHighlight] = useState<number[]>([]);
 
@@ -15,7 +12,8 @@ function App() {
 			const g = Graph.new_grid(4, 4);
 			setGraph(g);
 
-			const path = Array.from(bfs_shortest_path(g, 0, 15));
+			// const path = Array.from(bfs(g, 0, 15));
+			const path = Array.from(dijkstra(g, 0, 15))
   			console.log("Shortest path:", path);
 			setHighlight(path);
 		})();

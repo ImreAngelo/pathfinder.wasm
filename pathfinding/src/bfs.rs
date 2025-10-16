@@ -5,7 +5,7 @@ use crate::graph::Graph;
 
 /// Find the shortest path between `start` and `goal` using BFS
 #[wasm_bindgen]
-pub fn bfs_shortest_path(graph: &Graph, start: usize, goal: usize) -> Vec<usize> {
+pub fn bfs(graph: &Graph, start: usize, goal: usize) -> Vec<usize> {
     let mut queue = VecDeque::new();
     let mut visited = HashSet::new();
     let mut parent = HashMap::new();
@@ -26,7 +26,8 @@ pub fn bfs_shortest_path(graph: &Graph, start: usize, goal: usize) -> Vec<usize>
             return path;
         }
 
-        for &neighbor in &graph.adj[node] {
+        // iterate over neighbor-weight pairs, ignore weight
+        for &(neighbor, _) in &graph.adj[node] {
             if visited.insert(neighbor) {
                 parent.insert(neighbor, node);
                 queue.push_back(neighbor);
@@ -34,6 +35,5 @@ pub fn bfs_shortest_path(graph: &Graph, start: usize, goal: usize) -> Vec<usize>
         }
     }
 
-    // No path found
     vec![]
 }
