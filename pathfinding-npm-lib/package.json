@@ -1,0 +1,27 @@
+{
+  "name": "@imreangelo/pathfinder-wasm",
+  "version": "0.1.4",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "files": [
+    "dist",
+    "pkg"
+  ],
+  "keywords": [
+    "rust",
+    "wasm",
+    "webassembly"
+  ],
+  "author": "Imre Angelo",
+  "license": "MIT",
+  "packageManager": "pnpm@10.15.1",
+  "devDependencies": {
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}

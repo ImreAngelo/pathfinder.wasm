@@ -1,2 +1,6 @@
-**/build
 **/target
+**/build
+**/dist
+**/pkg
+
+**node_modules

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import init, { add } from './pathfinding/pathfinding';
+import { test, add } from '@imreangelo/pathfinder-wasm';
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -7,7 +7,7 @@ import './App.css'
 function App() {
 	const [count, setCount] = useState(0)
 
-	init("/pathfinding_bg.wasm");
+	test("hi");
 	console.log("2 + 3 =", add(2, 3));
 
 	return (
