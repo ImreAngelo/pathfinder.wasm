@@ -5,15 +5,15 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@imreangelo/pathfinder-wasm': link:../../pathfinding-npm-lib
+  '@imreangelo/pathfinder-wasm': link:../../pathfinding
 
 importers:
 
   .:
     dependencies:
       '@imreangelo/pathfinder-wasm':
-        specifier: link:../../pathfinding-npm-lib
-        version: link:../../pathfinding-npm-lib
+        specifier: link:../../pathfinding
+        version: link:../../pathfinding
       react:
         specifier: ^19.1.1
         version: 19.2.0
