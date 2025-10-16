@@ -1,6 +1,6 @@
 {
   "name": "@imreangelo/pathfinder-wasm",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "",
   "main": "dist/pathfinding.js",
   "repository": {
