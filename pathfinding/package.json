@@ -1,6 +1,6 @@
 {
   "name": "@imreangelo/pathfinder-wasm",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "description": "",
   "main": "dist/pathfinding.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "prepare": "npm run build"
   },
   "files": [
-    "src"
+    "dist"
   ],
   "keywords": [
     "rust",
