@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@imreangelo/pathfinder-wasm": "^0.1.5",
+    "@imreangelo/pathfinder-wasm": "^0.1.9",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },

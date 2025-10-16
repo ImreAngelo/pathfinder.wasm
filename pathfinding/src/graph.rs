@@ -21,6 +21,7 @@ impl Graph {
     }
 
     /// Generate a simple grid graph (like for maze/pathfinding)
+    #[wasm_bindgen]
     pub fn new_grid(width: usize, height: usize) -> Graph {
         let mut g = Graph::new(width * height);
         let index = |x: usize, y: usize| -> usize { y * width + x };

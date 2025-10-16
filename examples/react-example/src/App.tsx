@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { add, bfs } from '@imreangelo/pathfinder-wasm';
+import { add, bfs, Graph } from '@imreangelo/pathfinder-wasm';
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -9,15 +9,15 @@ function App() {
 
 	console.log("2 + 3 =", add(2, 3));
 
-	const graph = [
-		[1, 2],
-		[0, 3],
-		[0, 3],
-		[1, 2]
-	];
+	// Create a 4×4 grid graph
+	const g = Graph.new_grid(4, 4);
+	console.log("Graph size:", g.size());
 
-	const order = bfs(0, graph);
-	console.log("BFS order:", order);
+	// Do BFS from the top-left cell
+	console.log("BFS order:", g.bfs(0));
+
+	// Get neighbors of node 0
+	console.log("Neighbors of 0:", g.neighbors(0));
 
 	return (
 		<>
