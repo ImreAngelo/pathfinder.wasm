@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic WASM Example</title>
+</head>
+<body>
+    <h1>Raw WASM demo</h1>
+    <script>
+        async function loadWasm() {
+            const response = await fetch('/pathfinding_bg.wasm');
+            const bytes = await response.arrayBuffer();
+            const { instance } = await WebAssembly.instantiate(bytes);
+
+            console.log(instance);
+
+            // console.log("2 + 3 =", instance.exports.add(2, 3));
+        }
+
+        loadWasm();
+    </script>
+</body>
+</html>
