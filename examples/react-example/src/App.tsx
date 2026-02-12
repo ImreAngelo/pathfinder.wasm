@@ -1,45 +1,47 @@
 import { useEffect, useState } from 'react';
 // import { dijkstra, Graph } from '@imreangelo/pathfinder-wasm';
-import GraphCanvas from './components/graph-canvas';
-import './App.css'
+// import GraphCanvas from './components/graph-canvas';
 import { Grid } from '@imreangelo/pathfinder-wasm';
+import { NodeGrid, type GridNode } from './components/grid';
+import './App.css'
 
 function App() {
-	const [graph, setGraph] = useState<any>(null);
-	const [highlight, setHighlight] = useState<number[]>([]);
+	// const [graph, setGraph] = useState<Grid | null>(null);
+	// const [highlight, setHighlight] = useState<number[]>([]);
+	const [graph, setGraph] = useState<Grid | null>(null);
+	const [nodes, setNodes] = useState<GridNode[]>([]);
+	const [highlightedIds, setHighlightedIds] = useState<number[]>([]);
 
 	useEffect(() => {
 		(async () => {
 			const g = new Grid(10, 10);
-			
-			const walkable = g.nodes().map(({ id, x, y, walkable }, i) => {
-				console.log(`Node ${i}/${id} = (${x}, ${y}) -> ${walkable}`)
-				return Math.random() > 0.4;
-			})
 
-			console.log(walkable);
+			// Create random 
+			const walkable = g.nodes().map(() => Math.random() > 0.4)
+			
+			g.batch_set_walkable(Uint8Array.from(walkable));
+
+			setGraph(g);
 
 			console.log("BFS search found path: ");
-			g.bfs(0, 25)?.forEach((v, i) => {
-				console.log(`Node ${v}`)
-			});
+			// g.bfs(0, 25)?.forEach(({id, x, y, walkable}, i) => {
+			// 	console.log(`Node ${v}`)
+			// });
 
-			// const g = Graph.new_grid(4, 4);
-			// g.add_weighted_edge(0, 5, 2.0);
-			
-			// // const path = Array.from(bfs(g, 0, 15));
-			// const path = Array.from(dijkstra(g, 0, 15))
-			// console.log("Shortest path:", path);
-			
-			// setGraph(g);
-			// setHighlight(path);
+			// If bfs returns Uint32Array of ids:
+			// const pathIds = g.bfs(0, 25);
+			// setHighlightedIds(Array.from(pathIds ?? []));
+
+			// // Update nodes from the grid (depends on your API)
+			setNodes(g.nodes());
 		})();
 	}, []);
 
 	return (
 		<div className="flex flex-col items-center gap-2">
 			<h2>Graph Visualization</h2>
-			{graph && <GraphCanvas graph={graph} highlight={highlight} />}
+			{graph && <NodeGrid nodes={nodes} highlights={highlightedIds} cellSize={48} />}
+			{/* {graph && <GraphCanvas graph={graph} highlight={highlight} />} */}
 		</div>
 	)
 }
