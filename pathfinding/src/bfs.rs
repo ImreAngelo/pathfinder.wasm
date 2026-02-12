@@ -1,9 +1,9 @@
 use std::collections::{HashMap, HashSet, VecDeque};
 
-use crate::grid::{ConnectedGraph};
+use crate::{traits::WeightedGraph};
 
 /// Performs Breadth-First Search on a connected graph with un-weighted but walkable nodes
-pub fn bfs(graph: &impl ConnectedGraph, start: u32, goal: u32) -> Option<Vec<u32>> {
+pub fn bfs(graph: &impl WeightedGraph, start: u32, goal: u32) -> Option<Vec<u32>> {
     let mut q = VecDeque::new();
     let mut visited = HashSet::new();
     let mut parent = HashMap::new();
@@ -25,10 +25,9 @@ pub fn bfs(graph: &impl ConnectedGraph, start: u32, goal: u32) -> Option<Vec<u32
             return Some(path);
         }
 
-        // iterate over neighbor-weight pairs, ignore weight
-        // TODO: weight &(neighbor, w)
-        for &neighbor in &graph.neighbors(node) {
-            if graph.is_walkable(node) && visited.insert(neighbor) {
+        // iterate over neighbor-weight pairs, use weight = -1 as unwalkable
+        for &(neighbor, w) in &graph.neighbors(node) {
+            if w != -1.0 && visited.insert(neighbor) {
                 parent.insert(neighbor, node);
                 q.push_back(neighbor);
             }

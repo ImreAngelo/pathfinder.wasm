@@ -1,6 +1,6 @@
 use wasm_bindgen::prelude::*;
 
-use crate::bfs;
+use crate::{bfs, traits::WeightedGraph};
 
 /// A simple grid-based graph for pathfinding
 #[wasm_bindgen]
@@ -17,41 +17,29 @@ impl Grid {
     }
 }
 
-/// Implements neighbors as a list of indices
-/// TODO: make weighted graph separate, with (un)walkable = -1 etc.
-pub trait ConnectedGraph {
-    fn neighbors(&self, node: u32) -> Vec<u32>;
-    fn is_walkable(&self, node: u32) -> bool;
-}
-
-impl ConnectedGraph for Grid {
-    fn neighbors(&self, node: u32) -> Vec<u32> {
+impl WeightedGraph for Grid {
+    fn neighbors(&self, node: u32) -> Vec<(u32, f32)> {
         let mut out = Vec::new();
         
         let x = node % self.width;
         let y = node / self.width;
 
-        // 4-neighborhood example
+        // 4-directional movement
+        // TODO: figure out best way to switch between 4 and 8 directional movement live
         const DIRS: [(i32,i32);4] = [(1,0),(-1,0),(0,1),(0,-1)];
         for (dx, dy) in DIRS {
             let nx = x as i32 + dx;
             let ny = y as i32 + dy;
             if self.in_bounds(nx, ny) {
-                out.push(self.idx(nx as u32, ny as u32));
+                let id = self.idx(nx as u32, ny as u32);
+                let cost = if self.walkable[node as usize] { 1.0 } else { -1.0 };
+                out.push((id, cost));
             }
         }
 
         out
     }
-    fn is_walkable(&self, node: u32) -> bool {
-        self.walkable[node as usize]
-    }
 }
-
-// pub trait WeightedGraph {
-//     fn neighbors(&self, node: usize) -> Vec<usize>;
-//     fn cost(&self, node: usize) -> f32;
-// }
 
 #[wasm_bindgen]
 impl Grid {
