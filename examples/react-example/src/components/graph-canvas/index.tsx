@@ -21,7 +21,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
 		const ctx = canvasRef.current.getContext("2d");
 		if (!ctx) return;
 
-		const size = graph.size();
+		const size = width * height;
 		const grid = Math.sqrt(size);
 		const spacing = width / (grid + 1);
 
