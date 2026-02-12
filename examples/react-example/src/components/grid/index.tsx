@@ -33,8 +33,8 @@ export function NodeGrid({
 	colors = {
 		walkable: "#f59e0b",
 		blocked: "#111827",
-		highlighted: "#e5e7eb",
-		border: "#9ca3af",
+		highlighted: "#a80780",
+		border: "#1b1b1b",
 		background: "#ffffff",
 	},
 	className,
