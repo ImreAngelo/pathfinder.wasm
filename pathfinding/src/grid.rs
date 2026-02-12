@@ -20,12 +20,14 @@ impl Grid {
 /// Implements neighbors as a list of indices
 /// TODO: make weighted graph separate, with (un)walkable = -1 etc.
 pub trait ConnectedGraph {
-    fn neighbors(&self, node: u32, out: &mut Vec<u32>);
+    fn neighbors(&self, node: u32) -> Vec<u32>;
     fn is_walkable(&self, node: u32) -> bool;
 }
 
 impl ConnectedGraph for Grid {
-    fn neighbors(&self, node: u32, out: &mut Vec<u32>) {
+    fn neighbors(&self, node: u32) -> Vec<u32> {
+        let mut out = Vec::new();
+        
         let x = node % self.width;
         let y = node / self.width;
 
@@ -38,6 +40,8 @@ impl ConnectedGraph for Grid {
                 out.push(self.idx(nx as u32, ny as u32));
             }
         }
+
+        out
     }
     fn is_walkable(&self, node: u32) -> bool {
         self.walkable[node as usize]
@@ -120,7 +124,7 @@ impl Grid {
     }
 
     /// Returns the shortest path found with Breadth-First Search
-    pub fn bfs(&self, start: u32, goal: u32) -> Option<Box<[u32]>> {
+    pub fn bfs(&self, start: u32, goal: u32) -> Option<Vec<u32>> {
         bfs::bfs(self, start, goal)
     }
 

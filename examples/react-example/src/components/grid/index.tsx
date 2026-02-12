@@ -10,22 +10,10 @@ export type GridNode = {
 type Highlight = GridNode | number;
 
 export type NodeGridProps = {
-	/** All nodes to render */
 	nodes: GridNode[];
-
-	/**
-	 * Nodes (or node ids) to render in a third color.
-	 * Highlight color wins over walkable/blocked.
-	 */
 	highlights?: Highlight[];
-
-	/** Cell size in pixels (each node is 1x1 cell) */
 	cellSize?: number;
-
-	/** Optional click handler */
 	onCellClick?: (node: GridNode) => void;
-
-	/** Optional colors */
 	colors?: {
 		walkable: string;
 		blocked: string;
@@ -33,7 +21,6 @@ export type NodeGridProps = {
 		border: string;
 		background: string;
 	};
-
 	className?: string;
 	style?: React.CSSProperties;
 };
@@ -44,10 +31,10 @@ export function NodeGrid({
 	cellSize = 14,
 	onCellClick,
 	colors = {
-		walkable: "#f59e0b",     // light gray
-		blocked: "#111827",      // near-black
-		highlighted: "green",  // amber
-		border: "#9ca3af",       // gray
+		walkable: "#f59e0b",
+		blocked: "#111827",
+		highlighted: "#e5e7eb",
+		border: "#9ca3af",
 		background: "#ffffff",
 	},
 	className,
@@ -77,7 +64,6 @@ export function NodeGrid({
 				gridTemplateColumns: `repeat(${width}, ${cellSize}px)`,
 				gridTemplateRows: `repeat(${height}, ${cellSize}px)`,
 				background: colors.background,
-				lineHeight: 0,
 				...style,
 			}}
 		>
@@ -88,6 +74,8 @@ export function NodeGrid({
 					: n.walkable
 						? colors.walkable
 						: colors.blocked;
+
+				const coordColor = !n.walkable && !isHighlighted ? "#f9fafb" : "#111827";
 
 				return (
 					<div
@@ -100,14 +88,32 @@ export function NodeGrid({
 							background: bg,
 							border: `1px solid ${colors.border}`,
 							boxSizing: "border-box",
+							position: "relative",
 
-							// place by coordinates (so ordering of `nodes` doesn't matter)
+							// place by coordinates (ordering of `nodes` doesn't matter)
 							gridColumnStart: n.x + 1,
 							gridRowStart: n.y + 1,
 
 							cursor: onCellClick ? "pointer" : "default",
+							userSelect: "none",
 						}}
-					/>
+					>
+						<span
+							style={{
+								position: "absolute",
+								left: 2,
+								bottom: 1,
+								fontSize: Math.max(8, Math.floor(cellSize * 0.15)),
+								lineHeight: 1,
+								fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+								color: coordColor,
+								pointerEvents: "none",
+								whiteSpace: "nowrap",
+							}}
+						>
+							{n.x},{n.y}
+						</span>
+					</div>
 				);
 			})}
 		</div>

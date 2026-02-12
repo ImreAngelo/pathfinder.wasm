@@ -14,25 +14,23 @@ function App() {
 
 	useEffect(() => {
 		(async () => {
-			const g = new Grid(10, 10);
+			const g = new Grid(20, 16);
 
-			// Create random 
-			const walkable = g.nodes().map(() => Math.random() > 0.4)
-			
+			// Create random obstacles
+			const walkable = g.nodes().map(() => Math.random() > 0.35);
+
 			g.batch_set_walkable(Uint8Array.from(walkable));
-
+			
 			setGraph(g);
-
-			console.log("BFS search found path: ");
-			// g.bfs(0, 25)?.forEach(({id, x, y, walkable}, i) => {
-			// 	console.log(`Node ${v}`)
-			// });
-
-			// If bfs returns Uint32Array of ids:
-			// const pathIds = g.bfs(0, 25);
-			// setHighlightedIds(Array.from(pathIds ?? []));
-
-			// // Update nodes from the grid (depends on your API)
+			
+			const t0 = performance.now();
+			const path = g.bfs(Math.random() * 70, 110 + Math.random() * 70);
+			const t1 = performance.now();
+			
+			setHighlightedIds(Array.from(path ?? []));
+				
+			console.log(`BFS search found path in ${t1 - t0} milliseconds: `, path);
+			
 			setNodes(g.nodes());
 		})();
 	}, []);
