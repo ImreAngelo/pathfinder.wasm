@@ -1,6 +1,8 @@
+use std::{cell::RefCell, rc::Rc};
+
 use wasm_bindgen::prelude::*;
 
-use crate::{bfs, traits::WeightedGraph};
+use crate::{bfs, graph::{Graph, JSNode, Node}, traits::WeightedGraph};
 
 /// A simple grid-based graph for pathfinding
 #[wasm_bindgen]
@@ -91,17 +93,17 @@ impl Grid {
     }
 
     /// Returns all nodes
-    pub fn nodes(&self) -> Vec<Node> {
+    pub fn nodes(&self) -> Vec<JSNode> {
         let mut nodes = Vec::new();
         let mut id = 0;
 
         for y in 0..self.height {
             for x in 0..self.width {
-                nodes.push(Node {
+                nodes.push(JSNode {
                     id,
-                    x,
-                    y,
-                    walkable: self.walkable[id]
+                    x: x as f64,
+                    y: y as f64,
+                    cost: if self.walkable[id as usize] { 1.0 } else { -1.0 }
                 });
 
                 id += 1;
@@ -123,12 +125,51 @@ impl Grid {
     }
 }
 
-
+// grid
 #[wasm_bindgen]
-pub struct Node {
-    pub id: usize,
-    pub x: u32,
-    pub y: u32,
-    pub walkable: bool,
+struct Grid2D {
+    pub width: u32,
+    pub height: u32,
+    graph: Graph,
 }
 
+#[wasm_bindgen]
+impl Grid2D {
+    #[wasm_bindgen(constructor)]
+    pub fn new(width: u32, height: u32) -> Grid2D {
+        let mut graph = Graph::new();
+        for y in 0..height {
+            for x in 0..width {
+                let id = y * width + x;
+                graph.nodes.push(Rc::new(RefCell::new(Node { id, x: x as f64, y: y as f64, cost: 1.0, neighbors: Vec::new() })));
+            }
+        }
+
+        // connect neighbors
+        for y in 0..height {
+            for x in 0..width {
+                let id = y * width + x;
+                let node = graph.nodes.get(id as usize).unwrap().clone();
+
+                if x > 0 { // left
+                    node.borrow_mut().neighbors.push(graph.nodes.get((id - 1) as usize).unwrap().clone());
+                }
+                if x < width - 1 { // right
+                    node.borrow_mut().neighbors.push(graph.nodes.get((id + 1) as usize).unwrap().clone());
+                }
+                if y > 0 { // up
+                    node.borrow_mut().neighbors.push(graph.nodes.get((id - width) as usize).unwrap().clone());
+                }
+                if y < height - 1 { // down
+                    node.borrow_mut().neighbors.push(graph.nodes.get((id + width) as usize).unwrap().clone());
+                }
+            }
+        }
+
+        Grid2D { width, height, graph }
+    }
+
+    pub fn nodes(&self) -> Vec<JSNode> {
+        self.graph.nodes()
+    }
+}

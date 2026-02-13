@@ -1,19 +1,19 @@
 import React, { useMemo } from "react";
 
-export type GridNode = {
+export type Node = {
 	id: number;
 	x: number;
 	y: number;
-	walkable: boolean;
+	cost: number;
 };
 
-type Highlight = GridNode | number;
+type Highlight = Node | number;
 
 export type NodeGridProps = {
-	nodes: GridNode[];
+	nodes: Node[];
 	highlights?: Highlight[];
 	cellSize?: number;
-	onCellClick?: (node: GridNode) => void;
+	onCellClick?: (node: Node) => void;
 	colors?: {
 		walkable: string;
 		blocked: string;
@@ -71,16 +71,16 @@ export function NodeGrid({
 				const isHighlighted = highlightIds.has(n.id);
 				const bg = isHighlighted
 					? colors.highlighted
-					: n.walkable
+					: n.cost > 0
 						? colors.walkable
 						: colors.blocked;
 
-				const coordColor = !n.walkable && !isHighlighted ? "#f9fafb" : "#111827";
+				const coordColor = n.cost <= 0 && !isHighlighted ? "#f9fafb" : "#111827";
 
 				return (
 					<div
 						key={n.id}
-						title={`id=${n.id} (${n.x},${n.y}) walkable=${n.walkable}`}
+						title={`id=${n.id} (${n.x},${n.y}) cost=${n.cost}`}
 						onClick={onCellClick ? () => onCellClick(n) : undefined}
 						style={{
 							width: cellSize,

@@ -1,6 +1,6 @@
 mod traits;
 
-// mod graph;
+mod graph;
 
 mod grid;
 mod bfs;
